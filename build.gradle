@@ -1,0 +1,19 @@
+apply from: "gradle/scripts/publish.gradle"
+
+version = '1.0.15'
+
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+
+    testCompile 'org.assertj:assertj-core:1.7.1'
+}
