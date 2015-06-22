@@ -16,7 +16,7 @@ class JavaConventionsPluginTest {
     @BeforeClass
     public static void setUp(){
         project = ProjectBuilder.builder().build()
-        project.apply plugin: 'weltn24-java-conventions'
+        project.apply plugin: 'de.weltn24.java-conventions'
     }
 
     @Test
