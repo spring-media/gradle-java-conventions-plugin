@@ -1,6 +1,32 @@
-apply from: "gradle/scripts/publish.gradle"
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.gradle.publish:plugin-publish-plugin:0.9.0"
+    }
+}
+
+apply plugin: "com.gradle.plugin-publish"
 
 version = '1.0.15'
+group = 'de.weltn24'
+
+pluginBundle {
+    website = 'https://github.com/WeltN24/gradle-java-conventions-plugin'
+    vcsUrl = 'https://github.com/WeltN24/gradle-java-conventions-plugin'
+    description = 'The plugin applies conventions for java projects according to WeltN24\'s best practices'
+    tags = ['weltn24', 'java' , 'conventions']
+
+    plugins {
+        weltN24JavaConventionsPlugin {
+            id = 'de.weltn24.java-conventions'
+            displayName = 'WeltN24 Java Conventnions plugin'
+        }
+    }
+}
 
 apply plugin: 'groovy'
 
