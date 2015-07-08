@@ -8,50 +8,59 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.plugins.ide.idea.model.IdeaModel
 import org.gradle.plugins.ide.idea.model.IdeaProject
 
-
 class JavaConventionsPlugin implements Plugin<Project> {
 
     JavaConventionsPluginExtension pluginVariables;
 
     void apply(Project project) {
+        pluginVariables = project.extensions.create('weltn24JavaConventions', JavaConventionsPluginExtension)
+
+        projectConfiguration(project)
+        javaConfiguration(project)
+        testConfiguration(project)
+        ideaConfiguration(project)
+        integrationTestConfiguration(project)
+        componentTestConfiguration(project)
+        smokeTestConfiguration(project)
+    }
+
+
+    def projectConfiguration(project) {
+        project.apply(plugin: 'java')
+        project.apply(plugin: 'idea')
+        project.apply(plugin: 'eclipse')
+        project.apply(plugin: 'jacoco')
+
         project.repositories {
             jcenter()
         }
 
-        applyPlugins(project)
-
-        pluginVariables = project.extensions.create('weltn24JavaConventions', JavaConventionsPluginExtension)
-
         project.ext.gradleVersion = project.gradle.gradleVersion
         project.ext.javaVersion = org.gradle.internal.jvm.Jvm.current()
 
+    }
+
+    def javaConfiguration(project) {
+        project.tasks.withType(JavaCompile) {
+            options.encoding = 'UTF-8'
+            options.incremental = true
+            options.compilerArgs << '-Xlint:unchecked'
+        }
+    }
+
+    def testConfiguration(project) {
         project.afterEvaluate {
             project.dependencies {
                 project.dependencies.add(JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME, 'org.assertj:assertj-core:' + pluginVariables.assertjVersion)
             }
         }
 
-        //Set parallel forks to testThreads or default number of threads
         project.test {
             doFirst {
-                if(pluginVariables.runTestsParallel){
-                    if(pluginVariables.testThreads > 0){
-                        project.test.setMaxParallelForks pluginVariables.testThreads
-                    }else{
-                        project.test.setMaxParallelForks pluginVariables.defaultThreads
-                    }
+                if (pluginVariables.runTestsParallel) {
+                    project.test.setMaxParallelForks pluginVariables.testThreads
                 }
             }
-        }
-
-        configureIdea(project)
-        configureIntegrationTest(project)
-        configureSmokeTest(project)
-
-        project.tasks.withType(JavaCompile) {
-            options.encoding = 'UTF-8'
-            options.incremental = true
-            options.compilerArgs << '-Xlint:unchecked'
         }
 
         project.tasks.withType(Test) {
@@ -62,14 +71,8 @@ class JavaConventionsPlugin implements Plugin<Project> {
         }
     }
 
-    def applyPlugins(project) {
-        project.apply(plugin: 'java')
-        project.apply(plugin: 'idea')
-        project.apply(plugin: 'eclipse')
-        project.apply(plugin: 'jacoco')
-    }
 
-    def configureIdea(project) {
+    def ideaConfiguration(project) {
         IdeaModel idea = project.idea
         IdeaProject ideaProject = idea.getProject()
 
@@ -88,7 +91,7 @@ class JavaConventionsPlugin implements Plugin<Project> {
         }
     }
 
-    def configureIntegrationTest(project) {
+    def integrationTestConfiguration(project) {
         project.sourceSets {
             integrationTest {
                 java.srcDir project.file('src/integrationTest/java')
@@ -108,7 +111,6 @@ class JavaConventionsPlugin implements Plugin<Project> {
             }
         }
 
-        // TODO bjuhasz: test this
         project.afterEvaluate {
             project.dependencies {
                 integrationTestCompile project.sourceSets.main.output
@@ -124,18 +126,6 @@ class JavaConventionsPlugin implements Plugin<Project> {
             group: 'verification',
             description: 'Runs the integration tests.') {
 
-            //Set parallel forks to default threadNumber or integrationTestThreads, if set
-            doFirst {
-                if(pluginVariables.runTestsParallel){
-                    if(pluginVariables.integrationTestThreads > 0){
-                        project.integrationTest.setMaxParallelForks pluginVariables.integrationTestThreads
-                    }else{
-                        project.integrationTest.setMaxParallelForks pluginVariables.defaultThreads
-                    }
-                }
-            }
-
-            // TODO bjuhasz: test this
             testClassesDir = project.sourceSets.integrationTest.output.classesDir
             classpath = project.sourceSets.integrationTest.runtimeClasspath
             systemProperties['jar.path'] = project.jar.archivePath
@@ -150,7 +140,44 @@ class JavaConventionsPlugin implements Plugin<Project> {
         project.tasks.findByName('check').dependsOn('integrationTest')
     }
 
-    def configureSmokeTest(project) {
+    def componentTestConfiguration(project) {
+        project.sourceSets {
+            componentTest {
+                java.srcDir project.file('src/componentTest/java')
+                resources.srcDir project.file('src/componentTest/resources')
+            }
+        }
+
+        project.afterEvaluate {
+            project.dependencies {
+                componentTestCompile project.sourceSets.main.output
+                componentTestCompile project.configurations.testCompile
+                componentTestCompile project.sourceSets.test.output
+                componentTestRuntime project.configurations.testRuntime
+            }
+        }
+
+        project.task('componentTest',
+            type: Test,
+            dependsOn: project.jar,
+            group: 'verification',
+            description: 'Runs the component tests.') {
+
+            testClassesDir = project.sourceSets.componentTest.output.classesDir
+            classpath = project.sourceSets.componentTest.runtimeClasspath
+            systemProperties['jar.path'] = project.jar.archivePath
+        }
+
+        project.idea.module {
+            testSourceDirs += project.file('src/componentTest/java')
+            scopes.TEST.plus += [project.configurations.componentTestCompile]
+            scopes.TEST.plus += [project.configurations.componentTestRuntime]
+        }
+
+        project.tasks.findByName('check').dependsOn('componentTest')
+    }
+
+    def smokeTestConfiguration(project) {
         project.sourceSets {
             smokeTest {
                 java.srcDir project.file('src/smokeTest/java')
@@ -158,7 +185,6 @@ class JavaConventionsPlugin implements Plugin<Project> {
             }
         }
 
-        // TODO bjuhasz: test this
         project.afterEvaluate {
             project.dependencies {
                 smokeTestCompile project.sourceSets.main.output
@@ -174,18 +200,7 @@ class JavaConventionsPlugin implements Plugin<Project> {
             group: 'verification',
             description: 'Runs the smoke tests.') {
 
-            //Set parallel forks to default threadNumber or smokeTestThreads, if set
-            doFirst {
-                if(pluginVariables.runTestsParallel){
-                    if(pluginVariables.smokeTestThreads > 0){
-                        project.smokeTest.setMaxParallelForks pluginVariables.smokeTestThreads
-                    }else{
-                        project.smokeTest.setMaxParallelForks pluginVariables.defaultThreads
-                    }
-                }
-            }
 
-            // TODO bjuhasz: test this
             testClassesDir = project.sourceSets.smokeTest.output.classesDir
             classpath = project.sourceSets.smokeTest.runtimeClasspath
             systemProperties['jar.path'] = project.jar.archivePath
