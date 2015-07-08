@@ -148,6 +148,18 @@ class JavaConventionsPlugin implements Plugin<Project> {
             }
         }
 
+        // IntelliJ doesn't copy the resources from src/intTest into build/intTest,
+        // thus those resources are not on the classpath and are inaccessible:
+        // https://youtrack.jetbrains.com/issue/IDEA-128966
+        // http://zerodivisible.io/blog/2014/01/gradle-adding-new-sourcesets-while-using-intellij-idea/
+        // http://stackoverflow.com/questions/27755843/how-to-add-test-resources-root-in-gradle-intellij
+        // TODO: remove this hotfix when the bug-ticket is closed:
+        if (System.properties.'idea.active') {
+            test {
+                resources.srcDir project.file('src/componentTest/resources')
+            }
+        }
+
         project.afterEvaluate {
             project.dependencies {
                 componentTestCompile project.sourceSets.main.output
