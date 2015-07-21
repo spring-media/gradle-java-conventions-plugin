@@ -1,7 +1,7 @@
 Gradle Java Conventions Plugin ![Build Status](https://snap-ci.com/WeltN24/gradle-java-conventions-plugin/branch/master/build_image)
 ==============================
 
-This plugin applies best practices and conventions for developing Java based mircoservices at [welt](https://github.com/WeltN24).
+This plugin applies best practices and conventions for developing Java based microservices at [welt](https://github.com/WeltN24).
 
 ## Usage
 
