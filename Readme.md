@@ -14,7 +14,7 @@ Build script snippet for use in all Gradle versions:
         }
       }
       dependencies {
-        classpath "gradle.plugin.de.weltn24:java-conventions:2.0.2"
+        classpath "gradle.plugin.de.weltn24:java-conventions:3.0.0"
       }
     }
     
@@ -23,7 +23,7 @@ Build script snippet for use in all Gradle versions:
 Build script snippet for new, incubating, plugin mechanism introduced in Gradle 2.1:
 
     plugins {
-      id "de.weltn24.java-conventions" version "2.0.2"
+      id "de.weltn24.java-conventions" version "3.0.0"
     }
 
 
@@ -89,7 +89,7 @@ It's possible to overwrite the default version in the target project.
 Example:
 
     project.weltn24JavaConventions {
-        assertjVersion = '3.0.0'
+        assertjVersion = '3.1.0'
     }
 
 #### Parallel unit test execution
