@@ -5,27 +5,7 @@ This plugin applies best practices and conventions for developing Java based mic
 
 ## Usage
 
-Build script snippet for use in all Gradle versions:
-
-    buildscript {
-      repositories {
-        maven {
-          url "https://plugins.gradle.org/m2/"
-        }
-      }
-      dependencies {
-        classpath "gradle.plugin.de.weltn24:java-conventions:3.0.0"
-      }
-    }
-    
-    apply plugin: "de.weltn24.java-conventions"
-    
-Build script snippet for new, incubating, plugin mechanism introduced in Gradle 2.1:
-
-    plugins {
-      id "de.weltn24.java-conventions" version "3.0.0"
-    }
-
+See [plugin portal](https://plugins.gradle.org/plugin/de.weltn24.java-conventions).
 
 ## Preconditions
 - currently this plugin supports only Java projects using JDK 8 and git
