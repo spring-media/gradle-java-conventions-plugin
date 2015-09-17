@@ -9,11 +9,25 @@ buildscript {
     }
 }
 
+apply plugin: 'groovy'
 apply plugin: 'com.gradle.plugin-publish'
 apply plugin: 'maven-publish'
 
 version = '3.0.0'
 group = 'de.weltn24'
+
+sourceCompatibility = 1.6
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+
+    testCompile 'org.assertj:assertj-core:2.2.0'
+}
 
 pluginBundle {
     website = 'https://github.com/WeltN24/gradle-java-conventions-plugin'
@@ -29,24 +43,10 @@ pluginBundle {
     }
 }
 
-apply plugin: 'groovy'
-
-sourceCompatibility = 1.6
-
-repositories {
-    jcenter()
-}
-
-dependencies {
-    compile gradleApi()
-    compile localGroovy()
-
-    testCompile 'org.assertj:assertj-core:2.2.0'
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            groupId 'gradle.plugin.de.weltn24'
             from components.java
         }
     }
