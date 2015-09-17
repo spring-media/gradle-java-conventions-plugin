@@ -114,8 +114,14 @@ Language level and JDK will be configured to *Java 1.8* the VCS is set to *git*.
 
 ## Publishing
 
-Publishing is automatically done by snap-ci after a commit with increased version.
-    
-## Copyright (c) 2015 WeltN24 GmbH
+Publishing is automatically done by [SnapCI](https://snap-ci.com/WeltN24/gradle-java-conventions-plugin/branch/master) after a commit with increased version.
 
-Released under the [MIT license](https://tldrlegal.com/license/mit-license).
+## Contributing
+
+Contributions are more than welcome. Please follow the pull request [pro tips](https://guides.github.com/activities/contributing-to-open-source/#contributing) in order to submit your changes.
+
+## License 
+
+Copyright (c) 2015 WeltN24 GmbH
+
+Licensed under the [MIT license](https://tldrlegal.com/license/mit-license).
