@@ -13,7 +13,7 @@ apply plugin: 'groovy'
 apply plugin: 'com.gradle.plugin-publish'
 apply plugin: 'maven-publish'
 
-version = '3.0.0'
+version = '3.1.0'
 group = 'de.weltn24'
 
 sourceCompatibility = 1.6
