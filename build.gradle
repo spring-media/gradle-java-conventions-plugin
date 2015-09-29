@@ -13,7 +13,7 @@ apply plugin: 'groovy'
 apply plugin: 'com.gradle.plugin-publish'
 apply plugin: 'maven-publish'
 
-version = '3.1.0'
+version = '3.2.0'
 group = 'de.weltn24'
 
 sourceCompatibility = 1.6
@@ -33,7 +33,7 @@ pluginBundle {
     website = 'https://github.com/WeltN24/gradle-java-conventions-plugin'
     vcsUrl = 'https://github.com/WeltN24/gradle-java-conventions-plugin'
     description = 'The plugin applies best practices and conventions for developing Java based microservices@welt'
-    tags = ['weltn24', 'java' , 'conventions', 'welt']
+    tags = ['weltn24', 'java' , 'conventions', 'welt', 'n24']
 
     plugins {
         weltN24JavaConventionsPlugin {
