@@ -64,12 +64,12 @@ It's possible to overwrite the default version in the target project.
 
 | Type | Name | Default Value | Description |
 | ---- | ---- | ------------- | ----------- |
-|String| assertjVersion| "3.1.0"| sets a specified version of assertj in your project |
+|String| assertjVersion| "3.2.0"| sets a specified version of assertj in your project |
 
 Example:
 
     project.weltn24JavaConventions {
-        assertjVersion = '3.1.0'
+        assertjVersion = '3.2.0'
     }
 
 #### Parallel unit test execution
@@ -86,6 +86,20 @@ Example:
     project.weltn24JavaConventions {
         runTestsParallel = true
         testThreads = 4
+    }
+
+#### JaCoCo agent
+
+The default tool version of the [JaCoCo](http://eclemma.org/jacoco/trunk/doc/agent.html) can be set in the target project.
+
+| Type | Name | Default Value | Description |
+| ---- | ---- | ------------- | ----------- |
+|String| jacocoVersion| "0.7.5.201505241946"| sets a specified version of JaCoCo java agent in your project |
+
+Example:
+
+    project.weltn24JavaConventions {
+        jacocoVersion = '0.7.4.201502262128'
     }
 
 ### IDEA

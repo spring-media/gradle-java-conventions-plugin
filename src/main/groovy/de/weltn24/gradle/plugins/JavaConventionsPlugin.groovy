@@ -16,6 +16,7 @@ class JavaConventionsPlugin implements Plugin<Project> {
         pluginVariables = project.extensions.create('weltn24JavaConventions', JavaConventionsPluginExtension)
 
         projectConfiguration(project)
+        jacocoConfiguration(project)
         javaConfiguration(project)
         testConfiguration(project)
         ideaConfiguration(project)
@@ -38,6 +39,12 @@ class JavaConventionsPlugin implements Plugin<Project> {
         project.ext.gradleVersion = project.gradle.gradleVersion
         project.ext.javaVersion = org.gradle.internal.jvm.Jvm.current()
 
+    }
+
+    def jacocoConfiguration(project) {
+        project.jacoco {
+            toolVersion = pluginVariables.jacocoVersion
+        }
     }
 
     def javaConfiguration(project) {
