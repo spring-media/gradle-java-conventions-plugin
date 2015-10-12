@@ -22,7 +22,6 @@ class JavaConventionsPlugin implements Plugin<Project> {
         ideaConfiguration(project)
         integrationTestConfiguration(project)
         componentTestConfiguration(project)
-        smokeTestConfiguration(project)
     }
 
 
@@ -167,7 +166,6 @@ class JavaConventionsPlugin implements Plugin<Project> {
             }
         }
 
-
         project.afterEvaluate {
             project.dependencies {
                 componentTestCompile project.sourceSets.main.output
@@ -196,41 +194,4 @@ class JavaConventionsPlugin implements Plugin<Project> {
 
         project.tasks.findByName('check').dependsOn('componentTest')
     }
-
-    def smokeTestConfiguration(project) {
-        project.sourceSets {
-            smokeTest {
-                java.srcDir project.file('src/smokeTest/java')
-                resources.srcDir project.file('src/smokeTest/resources')
-            }
-        }
-
-        project.afterEvaluate {
-            project.dependencies {
-                smokeTestCompile project.sourceSets.main.output
-                smokeTestCompile project.configurations.testCompile
-                smokeTestCompile project.sourceSets.test.output
-                smokeTestRuntime project.configurations.testRuntime
-            }
-        }
-
-        project.task('smokeTest',
-            type: Test,
-            dependsOn: project.jar,
-            group: 'verification',
-            description: 'Runs the smoke tests.') {
-
-
-            testClassesDir = project.sourceSets.smokeTest.output.classesDir
-            classpath = project.sourceSets.smokeTest.runtimeClasspath
-            systemProperties['jar.path'] = project.jar.archivePath
-        }
-
-        project.idea.module {
-            testSourceDirs += project.file('src/smokeTest/java')
-            scopes.TEST.plus += [project.configurations.smokeTestCompile]
-            scopes.TEST.plus += [project.configurations.smokeTestRuntime]
-        }
-    }
-
 }
