@@ -37,19 +37,24 @@ Inspired by Martin Fowlers [proposal](http://martinfowler.com/articles/microserv
 
 1. Integration tests: *An integration test verifies the communication paths and interactions between components to detect interface defects.*
 2. Component tests: *A component test limits the scope of the exercised software to a portion of the system under test, manipulating the system through internal code interfaces and using test doubles to isolate the code under test from other components.*
-3. Smoke tests: Used during blue/green deployment for quickly checking the health of the new service version before switching (**not part of this plugin**).
+3. Smoke tests: Used during blue/green deployment for quickly checking the health of the new service version before switching.
 
 Using those configurations it's possible to configure distinct dependencies for the different test strategies. Example:
 
     integrationTestCompile(
       'com.jayway.jsonpath:json-path:2.0.0'
     )
+    smokeTestCompile(
+      'com.jayway.restassured:rest-assured:2.4.1'
+    )
 
 | Strategy | Configurations | Task | Source Set |
 | ---- | ---- | ------------- | ------------- |
 |Integration tests| integrationTestCompile, integrationTestRuntime| integrationTest| integrationTest |
 |Component tests| componentTestCompile, componentTestRuntime| componentTest| componentTest |
-|Smoke tests| **not part of this plugin**| | |
+|Smoke tests| smokeTestCompile, smokeTestRuntime| *smokeTest| smokeTest |
+
+*smokeTest: This task will only run when `SMOKETEST_SUT` (URL to the system under test) is configured as an environment variable.
 
 All custom configurations extend the test scope and have access to the production code. Furthermore integration and component tests are configured to be executed during *check* task of the Java plugin. Run *gradlew tasks* for more information.
 

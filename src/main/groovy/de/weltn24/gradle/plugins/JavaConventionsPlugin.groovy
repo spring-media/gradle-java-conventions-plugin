@@ -22,6 +22,7 @@ class JavaConventionsPlugin implements Plugin<Project> {
         ideaConfiguration(project)
         integrationTestConfiguration(project)
         componentTestConfiguration(project)
+        smokeTestConfiguration(project)
     }
 
 
@@ -166,6 +167,7 @@ class JavaConventionsPlugin implements Plugin<Project> {
             }
         }
 
+
         project.afterEvaluate {
             project.dependencies {
                 componentTestCompile project.sourceSets.main.output
@@ -194,4 +196,31 @@ class JavaConventionsPlugin implements Plugin<Project> {
 
         project.tasks.findByName('check').dependsOn('componentTest')
     }
+
+    def smokeTestConfiguration(project) {
+        project.sourceSets {
+            smokeTest {
+                java.srcDir project.file('src/smokeTest/java')
+                resources.srcDir project.file('src/smokeTest/resources')
+            }
+        }
+
+        project.task('smokeTest',
+            type: Test,
+            group: 'verification',
+            description: 'Runs the smoke tests against $SMOKETEST_SUT (must be set)') {
+
+            testClassesDir = project.sourceSets.smokeTest.output.classesDir
+            classpath = project.sourceSets.smokeTest.runtimeClasspath
+        }
+
+        project.smokeTest.onlyIf { System.getenv('SMOKETEST_SUT') }
+
+        project.idea.module {
+            testSourceDirs += project.file('src/smokeTest/java')
+            scopes.TEST.plus += [project.configurations.smokeTestCompile]
+            scopes.TEST.plus += [project.configurations.smokeTestRuntime]
+        }
+    }
+
 }

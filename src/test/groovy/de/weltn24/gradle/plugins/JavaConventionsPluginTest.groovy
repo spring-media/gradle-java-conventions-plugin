@@ -25,6 +25,11 @@ class JavaConventionsPluginTest {
     }
 
     @Test
+    public void javaConventionsPluginAddsSmokeTestTaskToProject() {
+        assertThat project.tasks.findByName('smokeTest') isInstanceOf Task.class
+    }
+
+    @Test
     public void ideaTestSourceDirsContainsIntegrationTest() {
         def Set<File> actualTestSourceDirs = project.idea.module.testSourceDirs
         def expectedIntegrationTestDir = project.file('src/integrationTest/java')
@@ -33,10 +38,28 @@ class JavaConventionsPluginTest {
     }
 
     @Test
+    public void ideaTestSourceDirsContainsSmokeTest() {
+        def Set<File> actualTestSourceDirs = project.idea.module.testSourceDirs
+        def expectedSmokeTestDir = project.file('src/smokeTest/java')
+
+        assertThat actualTestSourceDirs contains expectedSmokeTestDir
+    }
+
+    @Test
     public void projectSourceSetsContainIntegrationTestDirs() {
         def SourceSet actualSourceSet = project.sourceSets.find { it.name == 'integrationTest' }
         def expectedJavaDir = project.file('src/integrationTest/java')
         def expectedResourcesDir = project.file('src/integrationTest/resources')
+
+        assertThat actualSourceSet.java.srcDirs contains expectedJavaDir
+        assertThat actualSourceSet.resources.srcDirs contains expectedResourcesDir
+    }
+
+    @Test
+    public void projectSourceSetsContainSmokeTestDirs() {
+        def SourceSet actualSourceSet = project.sourceSets.find { it.name == 'smokeTest' }
+        def expectedJavaDir = project.file('src/smokeTest/java')
+        def expectedResourcesDir = project.file('src/smokeTest/resources')
 
         assertThat actualSourceSet.java.srcDirs contains expectedJavaDir
         assertThat actualSourceSet.resources.srcDirs contains expectedResourcesDir
