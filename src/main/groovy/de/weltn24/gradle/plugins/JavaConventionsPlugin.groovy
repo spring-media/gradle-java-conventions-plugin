@@ -145,6 +145,7 @@ class JavaConventionsPlugin implements Plugin<Project> {
         }
 
         project.tasks.findByName('check').dependsOn('integrationTest')
+        project.tasks.findByName('integrationTest').mustRunAfter('test')
     }
 
     def componentTestConfiguration(project) {
