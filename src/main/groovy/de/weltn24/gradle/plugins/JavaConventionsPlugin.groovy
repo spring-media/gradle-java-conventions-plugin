@@ -209,13 +209,17 @@ class JavaConventionsPlugin implements Plugin<Project> {
         project.task('smokeTest',
             type: Test,
             group: 'verification',
-            description: 'Runs the smoke tests against $SMOKETEST_SUT (must be set)') {
+            description: 'Runs the smoke tests against $SMOKETEST_SUT or stage (must be set)') {
 
             testClassesDir = project.sourceSets.smokeTest.output.classesDir
             classpath = project.sourceSets.smokeTest.runtimeClasspath
+
+            //setting JVM properties for ep (gradle forwarding)
+            systemProperties['STAGE'] = System.getProperty("STAGE")
+            systemProperties['SMOKETEST_SUT'] = System.getProperty("SMOKETEST_SUT")
         }
 
-        project.smokeTest.onlyIf { System.getenv('SMOKETEST_SUT') }
+        project.smokeTest.onlyIf { System.getenv('SMOKETEST_SUT') || System.getProperty('STAGE') }
 
         project.idea.module {
             testSourceDirs += project.file('src/smokeTest/java')
