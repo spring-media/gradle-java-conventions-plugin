@@ -214,7 +214,6 @@ class JavaConventionsPlugin implements Plugin<Project> {
             testClassesDir = project.sourceSets.smokeTest.output.classesDir
             classpath = project.sourceSets.smokeTest.runtimeClasspath
 
-            //setting JVM properties for ep (gradle forwarding)
             systemProperties['STAGE'] = System.getProperty("STAGE")
             systemProperties['SMOKETEST_SUT'] = System.getProperty("SMOKETEST_SUT")
         }
