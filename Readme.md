@@ -54,7 +54,7 @@ Using those configurations it's possible to configure distinct dependencies for 
 |Component tests| componentTestCompile, componentTestRuntime| componentTest| componentTest |
 |Smoke tests| smokeTestCompile, smokeTestRuntime| *smokeTest| smokeTest |
 
-*smokeTest: This task will only run when `SMOKETEST_SUT` (URL to the system under test) is configured as an environment variable.
+*smokeTest: This task will only run when `SMOKETEST_SUT` (URL to the system under test) is configured as an environment variable or `STAGE` is defined as JVM property. JVM properties `STAGE` and `SMOKETEST_SUT` will be forwarded to the smokeTest execution JVM.
 
 All custom configurations extend the test scope and have access to the production code. Furthermore integration and component tests are configured to be executed during *check* task of the Java plugin. Run *gradlew tasks* for more information.
 
