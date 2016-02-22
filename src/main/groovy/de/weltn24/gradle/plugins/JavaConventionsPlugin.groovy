@@ -216,6 +216,8 @@ class JavaConventionsPlugin implements Plugin<Project> {
 
             systemProperties['STAGE'] = System.getProperty("STAGE")
             systemProperties['SMOKETEST_SUT'] = System.getProperty("SMOKETEST_SUT")
+
+            outputs.upToDateWhen { false }
         }
 
         project.smokeTest.onlyIf { System.getenv('SMOKETEST_SUT') || System.getProperty('STAGE') }
