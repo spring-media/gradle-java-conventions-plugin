@@ -34,10 +34,6 @@ class JavaConventionsPlugin implements Plugin<Project> {
         project.repositories {
             jcenter()
         }
-
-        project.ext.gradleVersion = project.gradle.gradleVersion
-        project.ext.javaVersion = org.gradle.internal.jvm.Jvm.current()
-
     }
 
     def jacocoConfiguration(project) {
