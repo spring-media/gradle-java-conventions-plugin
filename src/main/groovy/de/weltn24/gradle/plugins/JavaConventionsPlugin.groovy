@@ -2,7 +2,6 @@ package de.weltn24.gradle.plugins
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.plugins.ide.idea.model.IdeaModel
@@ -56,12 +55,6 @@ class JavaConventionsPlugin implements Plugin<Project> {
     }
 
     def testConfiguration(project) {
-        project.afterEvaluate {
-            project.dependencies {
-                project.dependencies.add(JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME, 'org.assertj:assertj-core:' + pluginVariables.assertjVersion)
-            }
-        }
-
         project.test {
             doFirst {
                 if (pluginVariables.runTestsParallel) {

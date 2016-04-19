@@ -58,22 +58,6 @@ Using those configurations it's possible to configure distinct dependencies for 
 
 All custom configurations extend the test scope and have access to the production code. Furthermore integration and component tests are configured to be executed during *check* task of the Java plugin. Run *gradlew tasks* for more information.
 
-#### Dependencies
-
-[AssertJ](http://joel-costigliola.github.io/assertj/assertj-core-quick-start.html) is added to the test compile scope for fluent assertions.
-
-It's possible to overwrite the default version in the target project.
-
-| Type | Name | Default Value | Description |
-| ---- | ---- | ------------- | ----------- |
-|String| assertjVersion| "3.2.0"| sets a specified version of assertj in your project |
-
-Example:
-
-    project.weltn24JavaConventions {
-        assertjVersion = '3.2.0'
-    }
-
 #### Parallel unit test execution
 
 It's possible to enable parallel execution of unit tests
